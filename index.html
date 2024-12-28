@@ -3,15 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="theme-color" content="#000000">
     <title>deinococcusradiodurans</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
+    <link rel="preload" href="images.jpg" as="image">
 
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: rgba(0,0,0,0);
         }
 
         body, html {
@@ -29,6 +33,12 @@
             height: 100%;
             width: 100%;
             overflow: hidden;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .container.loaded {
+            opacity: 1;
         }
         
         .main-image {
@@ -39,6 +49,13 @@
             top: 0;
             left: 0;
             z-index: 1;
+            transition: transform 20s ease;
+            background: #000;
+            will-change: transform;
+        }
+
+        .container:hover .main-image {
+            transform: scale(1.1);
         }
         
         .content {
@@ -59,6 +76,20 @@
             line-height: 1.6;
             padding: 0 20px;
         }
+
+        .description p {
+            font-size: 1.4em;
+            line-height: 1.8;
+            max-width: 800px;
+            margin: 0 auto;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            letter-spacing: 0.5px;
+            transition: transform 0.3s ease;
+        }
+
+        .description p:hover {
+            transform: scale(1.02);
+        }
         
         h1 {
             font-weight: 700;
@@ -77,13 +108,16 @@
             color: white;
             text-decoration: none;
             font-size: 1.1em;
-            transition: opacity 0.3s;
+            transition: all 0.3s ease;
         }
 
         .social-link a:hover {
-            opacity: 0.8;
+            opacity: 1;
+            transform: translateY(-2px);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
-.ca-address {
+
+        .ca-address {
             position: absolute;
             top: 20px;
             right: 20px;
@@ -97,113 +131,109 @@
             border-radius: 4px;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
             cursor: pointer;
-            transition: all 0.2s ease;  /* 애니메이션 효과 추가 */
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            perspective: 1000px;
+            will-change: transform, opacity;
         }
 
         .ca-address:hover {
-            opacity: 0.9;
-            background: rgba(0, 0, 0, 0.4);
-            transition: all 0.3s ease;
+            opacity: 1;
+            background: rgba(0, 0, 0, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }
 
-        /* 축소 애니메이션을 위한 클래스 추가 */
+        .ca-address:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5);
+        }
+
         .ca-address.clicked {
             transform: scale(0.95);
         }
-/* 모바일 최적화를 위한 미디어 쿼리 */
-@media screen and (max-width: 768px) {
-    .description {
-        font-size: 0.9em;
-        padding: 0 15px;
-        word-break: keep-all; /* 단어 잘림 방지 */
-    }
 
-    .ca-address {
-        font-size: 0.75em; /* 폰트 크기 더 축소 */
-        padding: 6px 8px;
-        top: 15px;
-        right: 15px;
-        max-width: 90%; /* 최대 너비 제한 */
-        overflow: hidden;
-        text-overflow: ellipsis; /* 텍스트 오버플로우 처리 */
-        white-space: nowrap;
-    }
+        .copy-message {
+            will-change: transform, opacity;
+        }
 
-    .social-link {
-        top: 15px;
-        left: 15px;
-    }
+        @media screen and (max-width: 768px) {
+            .description {
+                font-size: 0.9em;
+                padding: 0 15px;
+                word-break: keep-all;
+            }
 
-    .social-link a {
-        font-size: 0.9em;
-    }
+            .ca-address {
+                font-size: 0.6em;
+                padding: 4px 6px;
+                top: 15px;
+                right: 15px;
+                max-width: 80%;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
 
-    .content {
-        padding: 0 10px;
-    }
-}
+            .social-link {
+                top: 15px;
+                left: 15px;
+            }
 
-@media screen and (max-width: 768px) {
-    .description {
-        font-size: 0.9em;
-        padding: 0 15px;
-        word-break: keep-all;
-    }
+            .social-link a {
+                font-size: 0.8em;
+            }
+        }
 
-    .ca-address {
-        font-size: 0.6em; /* 폰트 크기 더 축소 */
-        padding: 4px 6px; /* 패딩 축소 */
-        top: 15px;
-        right: 15px;
-        max-width: 80%; /* 최대 너비 제한 */
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
+        @media screen and (max-width: 480px) {
+            .description {
+                font-size: 0.8em;
+                padding: 0 10px;
+            }
 
-    .social-link {
-        top: 15px;
-        left: 15px;
-    }
+            .ca-address {
+                font-size: 0.5em;
+                padding: 3px 5px;
+                top: 10px;
+                right: 10px;
+            }
 
-    .social-link a {
-        font-size: 0.8em; /* 트위터 링크 폰트 크기도 약간 축소 */
-    }
-}
+            .social-link {
+                top: 10px;
+                left: 10px;
+            }
+        }
 
-@media screen and (max-width: 480px) {
-    .description {
-        font-size: 0.8em;
-        padding: 0 10px;
-    }
+        @media screen and (max-width: 320px) {
+            .ca-address {
+                font-size: 0.45em;
+                padding: 2px 4px;
+            }
 
-    .ca-address {
-        font-size: 0.5em; /* 폰트 크기 더욱 축소 */
-        padding: 3px 5px;
-        top: 10px;
-        right: 10px;
-    }
+            .description {
+                font-size: 0.7em;
+            }
+        }
 
-    .social-link {
-        top: 10px;
-        left: 10px;
-    }
-}
+        @media screen and (max-height: 480px) {
+            .description {
+                font-size: 0.8em;
+            }
+            
+            .content {
+                justify-content: flex-start;
+                padding-top: 60px;
+            }
+        }
 
-@media screen and (max-width: 320px) {
-    .ca-address {
-        font-size: 0.45em; /* 가장 작은 화면에서 폰트 더욱 축소 */
-        padding: 2px 4px;
-    }
-
-    .description {
-        font-size: 0.7em;
-    }
-}
-
-
-
-
+        @media (hover: none) and (pointer: coarse) {
+            .ca-address, .social-link a {
+                padding: 8px 12px;
+                margin: 5px;
+            }
+        }
     </style>
 </head>
 
@@ -219,43 +249,63 @@
                 <p>"Inspired by Nature's Toughest Bacteria - Deinococcus" soon </p>
             </div>
         </div>
-        <div class="ca-address">
+        <div class="ca-address" role="button" tabindex="0" aria-label="Copy contract address">
             CA:0x35809d18a497c76534bcfd945e6c664e55579e1a
         </div>
     </div>
-<script>
-    document.querySelector('.ca-address').addEventListener('click', function() {
-        const text = "0x35809d18a497c76534bcfd945e6c664e55579e1a";
-        const element = this;
-        
-        // 클릭 애니메이션
-        element.classList.add('clicked');
-        setTimeout(() => {
-            element.classList.remove('clicked');
-        }, 200);
 
-        navigator.clipboard.writeText(text).then(() => {
-            // 복사 성공 시 메시지 표시
-            const message = document.createElement('div');
-            message.textContent = 'Copied!';
-            message.style.position = 'absolute';
-            message.style.top = window.innerWidth <= 768 ? '45px' : '50px';
-            message.style.right = window.innerWidth <= 768 ? '15px' : '20px';
-            message.style.background = 'rgba(0, 0, 0, 0.7)';
-            message.style.color = 'white';
-            message.style.padding = window.innerWidth <= 768 ? '4px 8px' : '5px 10px';
-            message.style.borderRadius = '4px';
-            message.style.zIndex = '1000';
-            message.style.fontSize = window.innerWidth <= 768 ? '0.9em' : '1em';
-            document.body.appendChild(message);
-
-            // 2초 후 메시지 제거
-            setTimeout(() => {
-                document.body.removeChild(message);
-            }, 2000);
+    <script>
+        window.addEventListener('load', function() {
+            document.querySelector('.container').classList.add('loaded');
         });
-    });
-</script>
+
+        document.querySelector('.ca-address').addEventListener('click', function() {
+            const text = "0x35809d18a497c76534bcfd945e6c664e55579e1a";
+            const element = this;
+            
+            element.classList.add('clicked');
+            setTimeout(() => {
+                element.classList.remove('clicked');
+            }, 200);
+
+            navigator.clipboard.writeText(text).then(() => {
+                const message = document.createElement('div');
+                message.className = 'copy-message';
+                message.textContent = 'Copied!';
+                message.style.position = 'absolute';
+                message.style.top = window.innerWidth <= 768 ? '45px' : '50px';
+                message.style.right = window.innerWidth <= 768 ? '15px' : '20px';
+                message.style.background = 'rgba(0, 0, 0, 0.8)';
+                message.style.color = 'white';
+                message.style.padding = window.innerWidth <= 768 ? '4px 8px' : '8px 16px';
+                message.style.borderRadius = '4px';
+                message.style.zIndex = '1000';
+                message.style.opacity = '0';
+                message.style.transform = 'translateY(-10px)';
+                message.style.transition = 'all 0.3s ease';
+                message.style.willChange = 'transform, opacity';
+
+                document.body.appendChild(message);
+                requestAnimationFrame(() => {
+                    message.style.opacity = '1';
+                    message.style.transform = 'translateY(0)';
+                });
+
+                setTimeout(() => {
+                    message.style.opacity = '0';
+                    message.style.transform = 'translateY(-10px)';
+                    setTimeout(() => document.body.removeChild(message), 300);
+                }, 1700);
+            }).catch(err => {
+                const message = document.createElement('div');
+                message.textContent = 'Copy failed. Please try again.';
+                message.className = 'copy-message error';
+                // 에러 메시지 스타일링
+            });
+        });
+    </script>
+</body>
+</html>
 
 
 </body>

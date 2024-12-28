@@ -358,91 +358,40 @@
             });
         });
 
-window.addEventListener('load', function() {
-    const audio = document.getElementById('bgMusic');
-    const musicToggle = document.getElementById('musicToggle');
-    
-    // 자동 재생 시도
-    const playAttempt = setInterval(() => {
-        audio.play()
-            .then(() => {
-                clearInterval(playAttempt);
-            })
-            .catch((error) => {
-                console.log("재생 시도 중...");
-            });
-    }, 3000);
-
-    // 클릭 이벤트로 재생
-    document.addEventListener('click', function() {
-        audio.play()
-            .then(() => {
-                clearInterval(playAttempt);
-            })
-            .catch(function(error) {
-                console.log("Audio play failed:", error);
-            });
-    }, { once: true });
-
-  // 페이드 인/아웃 함수들
-function fadeIn(duration = 6000) {  // 6초로 변경
-    audio.volume = 0;
-    audio.play();
-    
-    let start = Date.now();
-    let timer = setInterval(() => {
-        let timePassed = Date.now() - start;
-        let progress = timePassed / duration;
-        
-        if (progress > 1) {
-            audio.volume = 1;
-            clearInterval(timer);
-            return;
-        }
-        
-        let easeProgress = progress < 0.5 
-            ? 2 * progress * progress 
-            : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+        window.addEventListener('load', function() {
+            const audio = document.getElementById('bgMusic');
+            const musicToggle = document.getElementById('musicToggle');
             
-        audio.volume = easeProgress;
-    }, 20);
-}
+            const playAttempt = setInterval(() => {
+                audio.play()
+                    .then(() => {
+                        clearInterval(playAttempt);
+                    })
+                    .catch((error) => {
+                        console.log("재생 시도 중...");
+                    });
+            }, 3000);
 
-function fadeOut(duration = 6000) {  // 6초로 변경
-    let start = Date.now();
-    let initialVolume = audio.volume;
-    
-    let timer = setInterval(() => {
-        let timePassed = Date.now() - start;
-        let progress = timePassed / duration;
-        
-        if (progress > 1) {
-            audio.volume = 0;
-            audio.pause();
-            clearInterval(timer);
-            return;
-        }
-        
-        let easeProgress = progress < 0.5 
-            ? 2 * progress * progress 
-            : 1 - Math.pow(-2 * progress + 2, 2) / 2;
-            
-        audio.volume = initialVolume * (1 - easeProgress);
-    }, 20);
-}
+            document.addEventListener('click', function() {
+                audio.play()
+                    .then(() => {
+                        clearInterval(playAttempt);
+                    })
+                    .catch(function(error) {
+                        console.log("Audio play failed:", error);
+                    });
+            }, { once: true });
 
-// 음악 토글 이벤트
-musicToggle.addEventListener('click', function() {
-    if (audio.paused) {
-        fadeIn(6000);  // 6초로 변경
-        this.style.opacity = '1';
-    } else {
-        fadeOut(6000);  // 6초로 변경
-        this.style.opacity = '0.7';
-    }
-});
-
-
+            musicToggle.addEventListener('click', function() {
+                if (audio.paused) {
+                    audio.play();
+                    this.style.opacity = '1';
+                } else {
+                    audio.pause();
+                    this.style.opacity = '0.7';
+                }
+            });
+        });
     </script>
 </body>
 </html>

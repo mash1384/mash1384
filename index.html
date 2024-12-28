@@ -285,18 +285,20 @@
     background: rgba(0, 0, 0, 0.2);
     border: 1px solid rgba(255, 255, 255, 0.1);
     color: white;
-    padding: 10px;
-    border-radius: 50%;
+    padding: 10px 15px;
+    border-radius: 20px;
     cursor: pointer;
-    font-size: 1.2em;
+    font-size: 0.9em;
     backdrop-filter: blur(5px);
     transition: all 0.3s ease;
+    font-family: 'Roboto Mono', monospace;
 }
 
 #musicToggle:hover {
     background: rgba(0, 0, 0, 0.4);
     transform: scale(1.1);
 }
+
 
     </style>
 </head>
@@ -320,10 +322,10 @@
 <audio id="bgMusic" autoplay loop>
     <source src="background.mp3" type="audio/mpeg">
 </audio>
-
 <div class="music-control">
-    <button id="musicToggle">🎵</button>
+    <button id="musicToggle">[music]</button>
 </div>
+
 
 </div>
 
@@ -381,12 +383,10 @@ window.addEventListener('load', function() {
     const audio = document.getElementById('bgMusic');
     const musicToggle = document.getElementById('musicToggle');
     
-    // 사용자 상호작용 필요
-    document.addEventListener('click', function() {
-        audio.play().catch(function(error) {
-            console.log("Audio play failed:", error);
-        });
-    }, { once: true });
+    // 페이지 로드 시 자동 재생
+    audio.play().catch(function(error) {
+        console.log("Audio play failed:", error);
+    });
 
     musicToggle.addEventListener('click', function() {
         if (audio.paused) {
@@ -398,6 +398,7 @@ window.addEventListener('load', function() {
         }
     });
 });
+
 
     </script>
 </body>

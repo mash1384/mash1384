@@ -274,6 +274,30 @@
         transform: translateY(0);
     }
 }
+.music-control {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    z-index: 3;
+}
+
+#musicToggle {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.2em;
+    backdrop-filter: blur(5px);
+    transition: all 0.3s ease;
+}
+
+#musicToggle:hover {
+    background: rgba(0, 0, 0, 0.4);
+    transform: scale(1.1);
+}
+
     </style>
 </head>
 
@@ -293,6 +317,14 @@
     <div class="ca-address" role="button" tabindex="0" aria-label="Copy contract address">
         CA:0x35809d18a497c76534bcfd945e6c664e55579e1a
     </div>
+<audio id="bgMusic" autoplay loop>
+    <source src="background.mp3" type="audio/mpeg">
+</audio>
+
+<div class="music-control">
+    <button id="musicToggle">🎵</button>
+</div>
+
 </div>
 
 
@@ -345,6 +377,28 @@
                 // 에러 메시지 스타일링
             });
         });
+window.addEventListener('load', function() {
+    const audio = document.getElementById('bgMusic');
+    const musicToggle = document.getElementById('musicToggle');
+    
+    // 사용자 상호작용 필요
+    document.addEventListener('click', function() {
+        audio.play().catch(function(error) {
+            console.log("Audio play failed:", error);
+        });
+    }, { once: true });
+
+    musicToggle.addEventListener('click', function() {
+        if (audio.paused) {
+            audio.play();
+            this.style.opacity = '1';
+        } else {
+            audio.pause();
+            this.style.opacity = '0.7';
+        }
+    });
+});
+
     </script>
 </body>
 </html>

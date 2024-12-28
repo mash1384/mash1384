@@ -392,7 +392,58 @@
                 }
             });
         });
+// 오디오 요소 가져오기
+const audio = document.getElementById('bgMusic');
+
+// 페이드 인 함수
+function fadeIn(duration = 2000) {
+    audio.volume = 0;
+    audio.play();
+    
+    let start = Date.now();
+    let timer = setInterval(() => {
+        let timePassed = Date.now() - start;
+        let progress = timePassed / duration;
+        
+        if (progress > 1) {
+            audio.volume = 1;
+            clearInterval(timer);
+            return;
+        }
+        
+        audio.volume = progress;
+    }, 50);
+}
+
+// 페이드 아웃 함수
+function fadeOut(duration = 2000) {
+    let start = Date.now();
+    let initialVolume = audio.volume;
+    
+    let timer = setInterval(() => {
+        let timePassed = Date.now() - start;
+        let progress = timePassed / duration;
+        
+        if (progress > 1) {
+            audio.volume = 0;
+            audio.pause();
+            clearInterval(timer);
+            return;
+        }
+        
+        audio.volume = initialVolume * (1 - progress);
+    }, 50);
+}
+
+// 사용 예시
+document.getElementById('musicToggle').addEventListener('click', function() {
+    if (audio.paused) {
+        fadeIn(2000); // 2초 동안 페이드 인
+    } else {
+        fadeOut(2000); // 2초 동안 페이드 아웃
+    }
+});
+
     </script>
 </body>
 </html>
-

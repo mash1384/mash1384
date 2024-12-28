@@ -9,7 +9,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
     <link rel="preload" href="images.jpg" as="image">
-
     <style>
         * {
             margin: 0;
@@ -27,7 +26,7 @@
             font-family: 'Playfair Display', serif;
             color: white;
         }
-        
+
         .container {
             position: relative;
             height: 100%;
@@ -37,10 +36,27 @@
             transition: opacity 0.5s ease;
         }
 
+        .particle-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.3) 100%);
+            z-index: 2;
+            pointer-events: none;
+            animation: particleFade 8s infinite alternate;
+        }
+
+        @keyframes particleFade {
+            0% { opacity: 0.3; }
+            100% { opacity: 0.7; }
+        }
+
         .container.loaded {
             opacity: 1;
         }
-        
+
         .main-image {
             width: 100%;
             height: 100%;
@@ -49,15 +65,17 @@
             top: 0;
             left: 0;
             z-index: 1;
-            transition: transform 20s ease;
             background: #000;
             will-change: transform;
+            transition: transform 30s ease, filter 1s ease;
+            filter: brightness(0.8) contrast(1.1);
         }
 
         .container:hover .main-image {
-            transform: scale(1.1);
+            transform: scale(1.05);
+            filter: brightness(0.7) contrast(1.2);
         }
-        
+
         .content {
             position: absolute;
             z-index: 2;
@@ -70,36 +88,36 @@
             justify-content: center;
             align-items: center;
         }
-        
-      .description {
-    font-size: 1.2em;
-    line-height: 1.6;
-    padding: 0 20px;
-    font-family: 'Playfair Display', serif;
-}
+
+        .description {
+            font-size: 1.2em;
+            line-height: 1.6;
+            padding: 0 20px;
+            font-family: 'Playfair Display', serif;
+        }
 
         .description p {
-    font-size: 1.4em;
-    line-height: 1.8;
-    max-width: 800px;
-    margin: 0 auto;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    letter-spacing: 0.5px;
-    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
-    opacity: 0.9;
-}
+            font-size: 1.4em;
+            line-height: 1.8;
+            max-width: 800px;
+            margin: 0 auto;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            letter-spacing: 0.5px;
+            transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+            opacity: 0.9;
+        }
 
         .description p:hover {
-    transform: scale(1.02);
-    opacity: 1;
-}
-        
+            transform: scale(1.02);
+            opacity: 1;
+        }
+
         h1 {
             font-weight: 700;
             font-size: 2.5em;
             margin-bottom: 20px;
         }
-        
+
         .social-link {
             position: absolute;
             top: 20px;
@@ -121,63 +139,106 @@
         }
 
         .ca-address {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    z-index: 3;
-    color: white;
-    font-size: 1.1em;
-    font-family: 'Roboto Mono', monospace;
-    padding: 8px 16px;
-    border-radius: 6px;
-    background: rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(5px);
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 3;
+            color: white;
+            font-size: 1.1em;
+            font-family: 'Roboto Mono', monospace;
+            padding: 8px 16px;
+            border-radius: 6px;
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(5px);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
 
-.ca-address:hover {
-    background: rgba(0, 0, 0, 0.4);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-}
+        .ca-address:hover {
+            background: rgba(0, 0, 0, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
 
-.ca-address.clicked {
-    transform: scale(0.95);
-    background: rgba(0, 0, 0, 0.6);
-}
+        .ca-address.clicked {
+            transform: scale(0.95);
+            background: rgba(0, 0, 0, 0.6);
+        }
 
-.copy-message {
-    position: absolute;
-    background: rgba(0, 0, 0, 0.8);
-    color: white;
-    padding: 8px 16px;
-    border-radius: 4px;
-    font-size: 0.9em;
-    opacity: 0;
-    transform: translateY(-10px);
-    animation: copyFeedback 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
+        .copy-message {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            opacity: 0;
+            transform: translateY(-10px);
+            animation: copyFeedback 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
 
-@keyframes copyFeedback {
-    0% {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    20% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-    80% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-    100% {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-}
+        @keyframes copyFeedback {
+            0% {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            20% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            80% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+        }
+
+        .coming-soon-text {
+            animation: textGlow 3s infinite alternate;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4em;
+            letter-spacing: 3px;
+        }
+
+        @keyframes textGlow {
+            0% {
+                text-shadow: 0 0 10px rgba(255,255,255,0.3);
+                opacity: 0.7;
+            }
+            100% {
+                text-shadow: 0 0 20px rgba(255,255,255,0.6);
+                opacity: 1;
+            }
+        }
+
+        .music-control {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            z-index: 3;
+        }
+
+        #musicToggle {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9em;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+            font-family: 'Roboto Mono', monospace;
+        }
+
+        #musicToggle:hover {
+            background: rgba(0, 0, 0, 0.4);
+            transform: scale(1.1);
+        }
 
         @media screen and (max-width: 768px) {
             .description {
@@ -185,7 +246,6 @@
                 padding: 0 15px;
                 word-break: keep-all;
             }
-
             .ca-address {
                 font-size: 0.6em;
                 padding: 4px 6px;
@@ -196,12 +256,10 @@
                 text-overflow: ellipsis;
                 white-space: nowrap;
             }
-
             .social-link {
                 top: 15px;
                 left: 15px;
             }
-
             .social-link a {
                 font-size: 0.8em;
             }
@@ -212,14 +270,12 @@
                 font-size: 0.8em;
                 padding: 0 10px;
             }
-
             .ca-address {
                 font-size: 0.5em;
                 padding: 3px 5px;
                 top: 10px;
                 right: 10px;
             }
-
             .social-link {
                 top: 10px;
                 left: 10px;
@@ -231,7 +287,6 @@
                 font-size: 0.45em;
                 padding: 2px 4px;
             }
-
             .description {
                 font-size: 0.7em;
             }
@@ -241,7 +296,6 @@
             .description {
                 font-size: 0.8em;
             }
-            
             .content {
                 justify-content: flex-start;
                 padding-top: 60px;
@@ -254,81 +308,32 @@
                 margin: 5px;
             }
         }
-.coming-soon-text {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.4em;
-    margin-top: 10px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    opacity: 0;
-    transform: translateY(20px);
-    animation: fadeInUp 0.8s ease-out forwards;
-}
-
-       @keyframes fadeInUp {
-    0% {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-.music-control {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-    z-index: 3;
-}
-
-#musicToggle {
-    background: rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: white;
-    padding: 10px 15px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 0.9em;
-    backdrop-filter: blur(5px);
-    transition: all 0.3s ease;
-    font-family: 'Roboto Mono', monospace;
-}
-
-#musicToggle:hover {
-    background: rgba(0, 0, 0, 0.4);
-    transform: scale(1.1);
-}
-
-
     </style>
 </head>
-
 <body>
-  <div class="container">
-    <img src="images.jpg" alt="$DR Token" class="main-image">
-    <div class="social-link">
-        <a href="https://x.com/Deinococcusbase">Twitter</a>
-    </div>
-    <div class="content">
-        <div class="description">
-            <h1></h1>
-            <p>"Inspired by Nature's Toughest Bacteria - Deinococcus"</p>
-            <p class="coming soon-text">coming soon</p>
+    <div class="container">
+        <div class="particle-overlay"></div>
+        <img src="images.jpg" alt="$DR Token" class="main-image">
+        <div class="social-link">
+            <a href="https://x.com/Deinococcusbase">Twitter</a>
+        </div>
+        <div class="content">
+            <div class="description">
+                <h1></h1>
+                <p>"Inspired by Nature's Toughest Bacteria - Deinococcus"</p>
+                <p class="coming-soon-text">coming soon</p>
+            </div>
+        </div>
+        <div class="ca-address" role="button" tabindex="0" aria-label="Copy contract address">
+            CA:0x35809d18a497c76534bcfd945e6c664e55579e1a
+        </div>
+        <audio id="bgMusic" autoplay loop>
+            <source src="background.mp3" type="audio/mpeg">
+        </audio>
+        <div class="music-control">
+            <button id="musicToggle">[music]</button>
         </div>
     </div>
-    <div class="ca-address" role="button" tabindex="0" aria-label="Copy contract address">
-        CA:0x35809d18a497c76534bcfd945e6c664e55579e1a
-    </div>
-<audio id="bgMusic" autoplay loop>
-    <source src="background.mp3" type="audio/mpeg">
-</audio>
-<div class="music-control">
-    <button id="musicToggle">[music]</button>
-</div>
-
-
-</div>
-
 
     <script>
         window.addEventListener('load', function() {
@@ -376,52 +381,44 @@
                 const message = document.createElement('div');
                 message.textContent = 'Copy failed. Please try again.';
                 message.className = 'copy-message error';
-                // 에러 메시지 스타일링
             });
         });
-window.addEventListener('load', function() {
-    const audio = document.getElementById('bgMusic');
-    const musicToggle = document.getElementById('musicToggle');
-    
-    // 여러 방법으로 자동 재생 시도
-    const playAttempt = setInterval(() => {
-        audio.play()
-        .then(() => {
-            clearInterval(playAttempt);
-        })
-        .catch((error) => {
-            console.log("재생 시도 중...");
+
+        window.addEventListener('load', function() {
+            const audio = document.getElementById('bgMusic');
+            const musicToggle = document.getElementById('musicToggle');
+            
+            const playAttempt = setInterval(() => {
+                audio.play()
+                .then(() => {
+                    clearInterval(playAttempt);
+                })
+                .catch((error) => {
+                    console.log("재생 시도 중...");
+                });
+            }, 3000);
+
+            document.addEventListener('click', function() {
+                audio.play()
+                .then(() => {
+                    clearInterval(playAttempt);
+                })
+                .catch(function(error) {
+                    console.log("Audio play failed:", error);
+                });
+            }, { once: true });
+
+            musicToggle.addEventListener('click', function() {
+                if (audio.paused) {
+                    audio.play();
+                    this.style.opacity = '1';
+                } else {
+                    audio.pause();
+                    this.style.opacity = '0.7';
+                }
+            });
         });
-    }, 3000);
-
-    // 페이지 어디든 클릭했을 때 재생 시도
-    document.addEventListener('click', function() {
-        audio.play()
-        .then(() => {
-            clearInterval(playAttempt);
-        })
-        .catch(function(error) {
-            console.log("Audio play failed:", error);
-        });
-    }, { once: true });
-
-    musicToggle.addEventListener('click', function() {
-        if (audio.paused) {
-            audio.play();
-            this.style.opacity = '1';
-        } else {
-            audio.pause();
-            this.style.opacity = '0.7';
-        }
-    });
-});
-
-
-
     </script>
 </body>
 </html>
 
-
-</body>
-</html>

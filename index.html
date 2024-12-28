@@ -121,46 +121,63 @@
         }
 
         .ca-address {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            z-index: 3;
-            color: white;
-            font-size: 1.1em;
-            font-family: 'Roboto Mono', monospace;
-            letter-spacing: 0.5px;
-            background: rgba(0, 0, 0, 0.2);
-            padding: 8px 12px;
-            border-radius: 4px;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-            transform: translateZ(0);
-            backface-visibility: hidden;
-            perspective: 1000px;
-            will-change: transform, opacity;
-        }
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 3;
+    color: white;
+    font-size: 1.1em;
+    font-family: 'Roboto Mono', monospace;
+    padding: 8px 16px;
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(5px);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
 
-        .ca-address:hover {
-            opacity: 1;
-            background: rgba(0, 0, 0, 0.5);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-        }
+.ca-address:hover {
+    background: rgba(0, 0, 0, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
 
-        .ca-address:focus {
-            outline: none;
-            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5);
-        }
+.ca-address.clicked {
+    transform: scale(0.95);
+    background: rgba(0, 0, 0, 0.6);
+}
 
-        .ca-address.clicked {
-            transform: scale(0.95);
-        }
+.copy-message {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    opacity: 0;
+    transform: translateY(-10px);
+    animation: copyFeedback 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
 
-        .copy-message {
-            will-change: transform, opacity;
-        }
+@keyframes copyFeedback {
+    0% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    20% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    80% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+}
 
         @media screen and (max-width: 768px) {
             .description {

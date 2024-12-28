@@ -383,10 +383,27 @@ window.addEventListener('load', function() {
     const audio = document.getElementById('bgMusic');
     const musicToggle = document.getElementById('musicToggle');
     
-    // 페이지 로드 시 자동 재생
-    audio.play().catch(function(error) {
-        console.log("Audio play failed:", error);
-    });
+    // 여러 방법으로 자동 재생 시도
+    const playAttempt = setInterval(() => {
+        audio.play()
+        .then(() => {
+            clearInterval(playAttempt);
+        })
+        .catch((error) => {
+            console.log("재생 시도 중...");
+        });
+    }, 3000);
+
+    // 페이지 어디든 클릭했을 때 재생 시도
+    document.addEventListener('click', function() {
+        audio.play()
+        .then(() => {
+            clearInterval(playAttempt);
+        })
+        .catch(function(error) {
+            console.log("Audio play failed:", error);
+        });
+    }, { once: true });
 
     musicToggle.addEventListener('click', function() {
         if (audio.paused) {
@@ -398,6 +415,7 @@ window.addEventListener('load', function() {
         }
     });
 });
+
 
 
     </script>

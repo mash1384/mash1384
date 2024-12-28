@@ -84,25 +84,26 @@
             opacity: 0.8;
         }
 .ca-address {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    z-index: 3;
-    color: white;
-    font-size: 1.1em;
-    font-family: 'Roboto Mono', monospace;
-    letter-spacing: 0.5px;
-    background: rgba(0, 0, 0, 0.4);
-    padding: 8px 12px;
-    border-radius: 4px;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-}
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 3;
+            color: white;
+            font-size: 1.1em;
+            font-family: 'Roboto Mono', monospace;
+            letter-spacing: 0.5px;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 8px 12px;
+            border-radius: 4px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            cursor: pointer;
+        }
 
-.ca-address:hover {
-    opacity: 0.9;
-    background: rgba(0, 0, 0, 0.6);
-    transition: all 0.3s ease;
-}
+        .ca-address:hover {
+            opacity: 0.9;
+            background: rgba(0, 0, 0, 0.4);
+            transition: all 0.3s ease;
+        }
 
     </style>
 </head>
@@ -123,5 +124,16 @@
             CA:0x35809d18a497c76534bcfd945e6c664e55579e1a
         </div>
     </div>
+  <script>
+        document.querySelector('.ca-address').addEventListener('click', function() {
+            const text = "0x35809d18a497c76534bcfd945e6c664e55579e1a";
+            navigator.clipboard.writeText(text).then(() => {
+                this.style.background = 'rgba(255, 255, 255, 0.2)';
+                setTimeout(() => {
+                    this.style.background = 'rgba(0, 0, 0, 0.2)';
+                }, 200);
+            });
+        });
+    </script>
 </body>
 </html>

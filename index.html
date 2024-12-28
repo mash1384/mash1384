@@ -97,6 +97,7 @@
             border-radius: 4px;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
             cursor: pointer;
+            transition: all 0.2s ease;  /* 애니메이션 효과 추가 */
         }
 
         .ca-address:hover {
@@ -104,6 +105,12 @@
             background: rgba(0, 0, 0, 0.4);
             transition: all 0.3s ease;
         }
+
+        /* 축소 애니메이션을 위한 클래스 추가 */
+        .ca-address.clicked {
+            transform: scale(0.95);
+        }
+
 
     </style>
 </head>
@@ -127,6 +134,14 @@
 <script>
     document.querySelector('.ca-address').addEventListener('click', function() {
         const text = "0x35809d18a497c76534bcfd945e6c664e55579e1a";
+        const element = this;
+        
+        // 클릭 애니메이션
+        element.classList.add('clicked');
+        setTimeout(() => {
+            element.classList.remove('clicked');
+        }, 200);
+
         navigator.clipboard.writeText(text).then(() => {
             // 복사 성공 시 메시지 표시
             const message = document.createElement('div');
@@ -148,6 +163,7 @@
         });
     });
 </script>
+
 
 </body>
 </html>
